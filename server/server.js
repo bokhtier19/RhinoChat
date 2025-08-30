@@ -23,8 +23,8 @@ app.use(express.json());
 // Connect to MongoDB
 mongoose
     .connect(process.env.MONGO_URI)
-    .then(() => console.log("✅ MongoDB connected"))
-    .catch((err) => console.error("❌ MongoDB error:", err));
+    .then(() => console.log("MongoDB connected"))
+    .catch((err) => console.error("MongoDB error:", err));
 
 // In-memory user storage
 const users = {}; // { username: socketId }
@@ -96,7 +96,7 @@ io.on("connection", (socket) => {
             io.emit("online_users", onlineUsers);
         }
 
-        console.log("❌ Client disconnected:", socket.id);
+        console.log("Client disconnected:", socket.id);
     });
 });
 
