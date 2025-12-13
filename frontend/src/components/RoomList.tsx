@@ -36,7 +36,7 @@ function getRoomName(room: Room, currentUserId: string | undefined) {
 
 const RoomList = ({ rooms, activeRoom, setActiveRoom, user }: RoomListProps) => {
     return (
-        <div className="w-72 bg-white border-r overflow-y-auto flex flex-col">
+        <div className="w-72 bg-white border-r overflow-y-auto hidden md:flex flex-col">
             {/* HEADER */}
             <div className="p-4 flex items-center justify-between border-b shadow-sm bg-gray-50">
                 <div className="flex items-center gap-2">

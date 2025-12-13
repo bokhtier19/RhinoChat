@@ -8,15 +8,17 @@ const App = () => {
     const token = localStorage.getItem("token");
 
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={!token ? <Login /> : <Navigate to={"/"} />} />
+        <div className="h-screen overflow-hidden">
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/login" element={!token ? <Login /> : <Navigate to={"/"} />} />
 
-                <Route path="/register" element={!token ? <Register /> : <Navigate to={"/"} />} />
+                    <Route path="/register" element={!token ? <Register /> : <Navigate to={"/"} />} />
 
-                <Route path="/" element={token ? <Chat /> : <Navigate to={"/login"} />} />
-            </Routes>
-        </BrowserRouter>
+                    <Route path="/" element={token ? <Chat /> : <Navigate to={"/login"} />} />
+                </Routes>
+            </BrowserRouter>
+        </div>
     );
 };
 

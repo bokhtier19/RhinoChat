@@ -126,7 +126,7 @@ const ChatWindow = ({ room, user }: ChatWindowProps) => {
 
     if (!room) {
         return (
-            <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
+            <div className="flex-1 flex flex-col items-center h-[90vh] overflow-hidden justify-center text-gray-400">
                 <BiChat size={40} />
                 <h2>Welcome to RhinoChat</h2>
                 <p>Send and Receive Messages with RhinoChat.</p>
@@ -136,7 +136,7 @@ const ChatWindow = ({ room, user }: ChatWindowProps) => {
     }
 
     return (
-        <div className="flex-1 flex flex-col bg-gray-100">
+        <div className="flex-1 flex flex-col bg-gray-100 max-h-[90vh] overflow-scroll">
             {/* HEADER */}
             <div className="p-4 border-b bg-white flex items-center gap-3 shadow-sm">
                 <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-xl">{getAvatar(room, user)}</div>
