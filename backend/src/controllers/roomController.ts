@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import Room from "../models/Room";
 
+// Create or get a direct 1:1 room
+
 export const DirectRoom = async (req: any, res: Response) => {
     try {
         const user1 = req.user.id;
@@ -26,6 +28,8 @@ export const DirectRoom = async (req: any, res: Response) => {
     }
 };
 
+// Get all rooms for logged-in user
+
 export const GetUserRooms = async (req: any, res: Response) => {
     try {
         const userId = req.user.id;
@@ -38,13 +42,15 @@ export const GetUserRooms = async (req: any, res: Response) => {
     }
 };
 
+// Create a group chat
+
 export const createGroup = async (req: any, res: Response) => {
     try {
         const { name, members } = req.body;
         const admin = req.user.id;
 
         if (!name || !members || members.length < 2) {
-            return res.status(400).json({ message: "Group needs a name and 2+ members" });
+            return res.status(400).json({ message: "Group needs a name and two plus members" });
         }
 
         // Include the creator automatically

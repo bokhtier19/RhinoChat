@@ -9,7 +9,7 @@ interface UserListProps {
 
 const UserList = ({ users, onUserClick, onClose, currentUser }: UserListProps) => {
     return (
-        <div className="fixed items-center justify-center inset-0 bg-black/60 flex" onClick={onClose}>
+        <div className="fixed items-center z-50 justify-center inset-0 bg-black/60 flex" onClick={onClose}>
             <div className=" w-64 border-r rounded-2xl overflow-y-auto bg-white " onClick={(e) => e.stopPropagation()}>
                 <div className="p-4 font-bold text-xl border-b">Contacts</div>
 

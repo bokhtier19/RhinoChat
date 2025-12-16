@@ -28,7 +28,7 @@ export default function CreateGroupModal({ users, onClose, onCreated }: Props) {
     };
 
     return (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center" onClick={onClose}>
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center" onClick={onClose}>
             <div className="bg-white w-96 p-4 rounded shadow" onClick={(e) => e.stopPropagation()}>
                 <h2 className="text-lg font-semibold mb-2">Create Group</h2>
 
@@ -47,7 +47,6 @@ export default function CreateGroupModal({ users, onClose, onCreated }: Props) {
                     <button onClick={onClose} className="px-3 py-1 border rounded">
                         Cancel
                     </button>
-
                     <button onClick={createGroup} className="px-3 py-1 bg-green-600 text-white rounded">
                         Create
                     </button>

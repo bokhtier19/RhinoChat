@@ -7,71 +7,12 @@ import { User } from "../types/User";
 import { Message } from "../types/Message";
 import { BiChat } from "react-icons/bi";
 
+import { formatDay } from "../utils/dateHelpers";
+import { getAvatar, getChatName, getOtherMember, getGroupMembers } from "../utils/chatHelpers";
+
 interface ChatWindowProps {
     room: Room | null;
     user: User | null;
-}
-
-// --- HELPER: SAFELY FIND OTHER USER IN 1-ON-1 CHAT ---
-function getOtherMember(room: Room, currentUserId?: string) {
-    if (!room || !Array.isArray(room.members)) return null;
-
-    // return first member that is not me, works for string IDs or objects
-    return (
-        room.members.find((m: any) => {
-            if (!m) return false;
-
-            if (typeof m === "string") {
-                return m !== currentUserId;
-            }
-
-            return m._id !== currentUserId;
-        }) || null
-    );
-}
-
-// --- HELPER: GET INITIAL FOR AVATAR ---
-function getAvatar(room: Room, user?: User | null) {
-    if (room.isGroup) {
-        return (room.name ?? "G").charAt(0).toUpperCase();
-    }
-
-    const other = getOtherMember(room, user?._id);
-
-    if (!other || typeof other === "string") return "U";
-
-    return (other.username ?? "U").charAt(0).toUpperCase();
-}
-
-// --- HELPER: GET DISPLAY NAME ---
-function getChatName(room: Room, user?: User | null) {
-    if (room.isGroup) return room.name;
-
-    const other = getOtherMember(room, user?._id);
-
-    if (!other) return "Unknown";
-
-    if (typeof other === "string") return "Unknown";
-
-    return other.username ?? "Unknown";
-}
-
-// --- HELPER: FORMAT DATE LABEL ---
-function formatDay(dateString: string) {
-    const date = new Date(dateString);
-    const today = new Date();
-
-    const isToday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
-
-    const yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1);
-
-    const isYesterday = date.getDate() === yesterday.getDate() && date.getMonth() === yesterday.getMonth() && date.getFullYear() === yesterday.getFullYear();
-
-    if (isToday) return "Today";
-    if (isYesterday) return "Yesterday";
-
-    return date.toLocaleDateString([], { day: "numeric", month: "short", year: "numeric" });
 }
 
 const ChatWindow = ({ room, user }: ChatWindowProps) => {
@@ -142,7 +83,7 @@ const ChatWindow = ({ room, user }: ChatWindowProps) => {
                 <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-xl">{getAvatar(room, user)}</div>
                 <div>
                     <h2 className="text-lg font-semibold">{getChatName(room, user)}</h2>
-                    <p className="text-xs text-green-600">Online</p>
+                    <p className="text-xs text-green-600">{room.isGroup ? getGroupMembers(room, user?._id) : getOtherMember(room, user?._id) ? "Online" : "Offline"}</p>
                 </div>
             </div>
 
