@@ -8,7 +8,7 @@ const Register = () => {
     const [form, setForm] = useState({
         username: "",
         email: "",
-        password: "",
+        password: ""
     });
 
     const [loading, setLoading] = useState(false);

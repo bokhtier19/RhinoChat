@@ -1,32 +1,19 @@
-import { Server } from "socket.io";
-import { Message } from "../models/Message";
+import {initChatSocket} from "./chat.socket";
+import {initSeenSocket} from "./seen.socket";
+import {initPresenceSocket} from "./presence.socket";
 
-export const initSocket = (io: Server) => {
-    io.on("connection", (socket) => {
-        console.log("a user connected", socket.id);
+export const initSocket = (io: any) => {
+    const onlineUsers = new Map<string, string>();
 
-        socket.on("joinRoom", (roomId) => {
-            socket.join(roomId);
-        });
+    io.on("connection", (socket: any) => {
+        console.log("socket connected:", socket.id);
 
-        socket.on("sendMessage", async ({ roomId, senderId, text }) => {
-            const message = await Message.create({
-                room: roomId,
-                sender: senderId,
-                text,
-            });
-
-            // Populate sender so the frontend instantly gets sender._id & sender.username
-            const populated = await message.populate("sender", "username _id");
-
-            io.to(roomId).emit("receiveMessage", {
-                ...populated.toObject(),
-                room: roomId,
-            });
-        });
+        initPresenceSocket(io, socket, onlineUsers);
+        initChatSocket(io, socket);
+        initSeenSocket(io, socket);
 
         socket.on("disconnect", () => {
-            console.log("User Disconnected!", socket.id);
+            console.log("socket disconnected:", socket.id);
         });
     });
 };

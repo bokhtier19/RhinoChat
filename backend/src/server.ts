@@ -2,16 +2,15 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import http from "http";
-import { Server } from "socket.io";
+import {Server} from "socket.io";
 
 import authRouter from "./routes/authRoutes";
 import userRouter from "./routes/userRoutes";
 import roomRouter from "./routes/roomRoutes";
 import messageRouter from "./routes/messageRoutes";
 
-import { connectDB } from "./config/db";
-import { initSocket } from "./sockets/initSocket";
-
+import {connectDB} from "./config/db";
+import {initSocket} from "./sockets/initSocket";
 dotenv.config();
 connectDB();
 
@@ -28,8 +27,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: "http://localhost:5173",
-        methods: ["GET", "POST"],
-    },
+        methods: ["GET", "POST"]
+    }
 });
 
 // Initialize socket handlers

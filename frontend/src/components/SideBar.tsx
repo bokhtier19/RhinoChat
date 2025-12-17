@@ -7,25 +7,32 @@ import { RiChat4Fill, RiChatNewFill } from "react-icons/ri";
 interface SidebarProps {
     setShowGroupModal: (value: boolean) => void;
     setShowUserList: (value: boolean) => void;
+    setShowComingSoon: (value: boolean) => void;
 }
 
-const SideBar = ({ setShowGroupModal, setShowUserList }: SidebarProps) => {
+const SideBar = ({ setShowGroupModal, setShowUserList, setShowComingSoon }: SidebarProps) => {
     return (
         <div>
             <div className="flex flex-col gap-2 px-2 py-4 bg-gray-300 h-[95vh]">
+                {/* button for viewing room list */}
                 <button onClick={() => setShowGroupModal(true)} className="p-2 bg-green-600 text-white rounded m-2">
                     <RiChat4Fill size={25} />
                 </button>
+                {/* button for making group */}
                 <button onClick={() => setShowGroupModal(true)} className="p-2 bg-green-600 text-white rounded m-2">
                     <AiOutlineUsergroupAdd size={25} />
                 </button>
+                {/* button for coming soon features */}
                 <button onClick={() => setShowUserList(true)} className="flex justify-center items-center p-2 bg-green-600 text-white rounded m-2">
                     <RiChatNewFill size={25} />
                 </button>
-                <button onClick={() => setShowUserList(true)} className="flex justify-center items-center p-2 bg-green-600 text-white rounded m-2">
+
+                {/* button for calling */}
+                <button onClick={() => setShowComingSoon(true)} className="flex justify-center items-center p-2 bg-green-600 text-white rounded m-2">
                     <MdOutlineCall size={25} />
                 </button>
-                <button onClick={() => setShowUserList(true)} className="flex justify-center items-center p-2 bg-green-600 text-white rounded m-2">
+                {/* button for settings */}
+                <button onClick={() => setShowComingSoon(true)} className="flex justify-center items-center p-2 bg-green-600 text-white rounded m-2">
                     <IoSettingsOutline size={25} />
                 </button>
             </div>

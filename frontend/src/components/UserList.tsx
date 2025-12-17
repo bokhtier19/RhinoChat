@@ -1,4 +1,4 @@
-import { User } from "./../types/User";
+import {User} from "./../types/User";
 
 interface UserListProps {
     users: User[];
@@ -7,29 +7,35 @@ interface UserListProps {
     currentUser: User | null;
 }
 
-const UserList = ({ users, onUserClick, onClose, currentUser }: UserListProps) => {
+const UserList = ({users, onUserClick, onClose, currentUser}: UserListProps) => {
     return (
-        <div className="fixed items-center z-50 justify-center inset-0 bg-black/60 flex" onClick={onClose}>
-            <div className=" w-64 border-r rounded-2xl overflow-y-auto bg-white " onClick={(e) => e.stopPropagation()}>
-                <div className="p-4 font-bold text-xl border-b">Contacts</div>
-
-                {users
-                    .filter((u) => u._id !== currentUser?._id)
-                    .map((user) => (
-                        <div key={user._id} onClick={() => onUserClick(user)} className="p-4 flex items-center gap-3 cursor-pointer hover:bg-gray-100 border-b">
-                            <div className="w-10 h-10 rounded-full bg-green-300 flex items-center justify-center">{user.username[0].toUpperCase()}</div>
-
-                            <div>
-                                <p className="font-semibold">{user.username}</p>
-                                <p className="text-xs text-green-600">online</p>
-                            </div>
-                        </div>
-                    ))}
-
-                <div className="flex justify-end">
-                    <button onClick={onClose} className="m-2 px-2 py-1 items-center flex justify-end border">
-                        Close
+        <div className="fixed inset-0 z-50 flex bg-black/50 backdrop-blur-sm" onClick={onClose}>
+            {/* Drawer */}
+            <div className="relative h-full w-72 bg-white shadow-xl animate-slideInLeft" onClick={(e) => e.stopPropagation()}>
+                {/* Header */}
+                <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b bg-white">
+                    <h2 className="text-lg font-semibold text-gray-800">Contacts</h2>
+                    <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">
+                        ×
                     </button>
+                </div>
+
+                {/* Contact List */}
+                <div className="overflow-y-auto">
+                    {users
+                        .filter((u) => u._id !== currentUser?._id)
+                        .map((user) => (
+                            <div key={user._id} onClick={() => onUserClick(user)} className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-100 transition">
+                                {/* Avatar */}
+                                <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold">{user.username[0].toUpperCase()}</div>
+
+                                {/* Info */}
+                                <div className="flex-1">
+                                    <p className="font-medium text-gray-900">{user.username}</p>
+                                    <p className="text-xs text-green-600">Online</p>
+                                </div>
+                            </div>
+                        ))}
                 </div>
             </div>
         </div>

@@ -1,22 +1,23 @@
-import { useEffect, useState } from "react";
-import { api } from "../api/api";
-import { socket } from "../api/socket";
+import {use, useEffect, useState} from "react";
+import {api} from "../api/api";
+import {socket} from "../api/socket";
 
-import { Room } from "../types/Room";
-import { User } from "../types/User";
-import { Message } from "../types/Message";
-import { BiChat } from "react-icons/bi";
+import {Room} from "../types/Room";
+import {User} from "../types/User";
+import {Message} from "../types/Message";
+import {BiChat} from "react-icons/bi";
 
-import { formatDay } from "../utils/dateHelpers";
-import { getAvatar, getChatName, getOtherMember, getGroupMembers } from "../utils/chatHelpers";
+import {formatDay} from "../utils/dateHelpers";
+import {getAvatar, getChatName, getOtherMember, getGroupMembers} from "../utils/chatHelpers";
 
 interface ChatWindowProps {
     room: Room | null;
     user: User | null;
 }
 
-const ChatWindow = ({ room, user }: ChatWindowProps) => {
+const ChatWindow = ({room, user}: ChatWindowProps) => {
     const [messages, setMessages] = useState<Message[]>([]);
+    const [onlineusers, setOnlineUsers] = useState<string[]>([]);
     const [text, setText] = useState("");
 
     // Load messages when room changes
@@ -53,13 +54,27 @@ const ChatWindow = ({ room, user }: ChatWindowProps) => {
         }
     }, [room]);
 
+    // Listen for online users
+
+    useEffect(() => {
+        socket.on("onlineUsers", (users: string[]) => {
+            setOnlineUsers(users);
+        });
+
+        console.log(onlineusers);
+
+        return () => {
+            socket.off("onlineUsers");
+        };
+    }, []);
+
     const sendMessage = () => {
         if (!text.trim() || !user || !room) return;
 
         socket.emit("sendMessage", {
             roomId: room._id,
             senderId: user._id,
-            text,
+            text
         });
 
         setText("");
@@ -75,6 +90,9 @@ const ChatWindow = ({ room, user }: ChatWindowProps) => {
             </div>
         );
     }
+    const otherMember = !room?.isGroup ? getOtherMember(room, user?._id) : null;
+
+    const otherUserId = typeof otherMember === "string" ? otherMember : otherMember?._id;
 
     return (
         <div className="flex-1 flex flex-col bg-gray-100 max-h-[90vh] overflow-scroll">
@@ -83,7 +101,7 @@ const ChatWindow = ({ room, user }: ChatWindowProps) => {
                 <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-xl">{getAvatar(room, user)}</div>
                 <div>
                     <h2 className="text-lg font-semibold">{getChatName(room, user)}</h2>
-                    <p className="text-xs text-green-600">{room.isGroup ? getGroupMembers(room, user?._id) : getOtherMember(room, user?._id) ? "Online" : "Offline"}</p>
+                    <p className="text-xs text-green-600">{room.isGroup ? getGroupMembers(room, user?._id) : onlineusers.includes(otherUserId ?? "") ? "Online" : "Offline"}</p>
                 </div>
             </div>
 
@@ -96,7 +114,7 @@ const ChatWindow = ({ room, user }: ChatWindowProps) => {
 
                     const time = new Date(m.createdAt).toLocaleTimeString([], {
                         hour: "2-digit",
-                        minute: "2-digit",
+                        minute: "2-digit"
                     });
 
                     return (

@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-import { api } from "../api/api";
-import { Room } from "../types/Room";
-import { User } from "../types/User";
-import { getUsers } from "../api/users";
+import {api} from "../api/api";
+import {Room} from "../types/Room";
+import {User} from "../types/User";
+import {getUsers} from "../api/users";
 
 import RoomList from "../components/RoomList";
 import ChatWindow from "../components/ChatWindow";
 
-import { socket } from "../api/socket";
+import {socket} from "../api/socket";
 import UserList from "../components/UserList";
 import CreateGroupModal from "../components/CreateGroupModal";
 import SideBar from "../components/SideBar";
 import Navbar from "../components/Navbar";
-
+import ComingSoon from "../components/ComingSoon";
 const Chat = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
@@ -26,6 +26,7 @@ const Chat = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [showGroupModal, setShowGroupModal] = useState(false);
     const [showUserList, setShowUserList] = useState(false);
+    const [showComingSoon, setShowComingSoon] = useState(false);
 
     // Fetch users on mount
     useEffect(() => {
@@ -42,7 +43,7 @@ const Chat = () => {
 
         // Create OR get existing direct room
         const res = await api.post("/rooms/direct", {
-            user2: otherUser._id,
+            user2: otherUser._id
         });
 
         const room = res.data;
@@ -104,8 +105,7 @@ const Chat = () => {
         <div className="flex flex-col h-screen bg-gray-100">
             <Navbar />
             <div className="flex">
-                <SideBar setShowGroupModal={setShowGroupModal} setShowUserList={setShowUserList} />
-
+                <SideBar setShowGroupModal={setShowGroupModal} setShowUserList={setShowUserList} setShowComingSoon={setShowComingSoon} />
                 {showGroupModal && (
                     <CreateGroupModal
                         users={users}
@@ -116,9 +116,8 @@ const Chat = () => {
                         }}
                     />
                 )}
-
                 {showUserList && <UserList users={users} onUserClick={startDirectChat} onClose={() => setShowUserList(false)} currentUser={user} />}
-
+                {showComingSoon && <ComingSoon onClose={() => setShowComingSoon(false)} />}
                 <RoomList rooms={rooms} activeRoom={activeRoom} setActiveRoom={setActiveRoom} user={user} />
                 <ChatWindow room={activeRoom} user={user} />
             </div>

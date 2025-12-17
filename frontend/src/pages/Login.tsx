@@ -1,20 +1,20 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { loginUser } from "../api/auth";
+import {useState} from "react";
+import {useNavigate, Link} from "react-router-dom";
+import {loginUser} from "../api/auth";
 
 const Login = () => {
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
         email: "",
-        password: "",
+        password: ""
     });
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        setForm({...form, [e.target.name]: e.target.value});
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
