@@ -36,22 +36,24 @@ function getRoomName(room: Room, currentUserId: string | undefined) {
 
 const RoomList = ({ rooms, activeRoom, setActiveRoom, user }: RoomListProps) => {
     return (
-        <div className="w-72 bg-white border-r overflow-y-auto hidden md:flex flex-col">
+        <div className="hidden w-72 flex-col overflow-y-auto border-r bg-white md:flex">
             {/* HEADER */}
-            <div className="p-4 flex items-center justify-between border-b shadow-sm bg-gray-50">
+            <div className="flex items-center justify-between border-b bg-gray-50 p-4 shadow-sm">
                 <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-lg">{user?.username.charAt(0).toUpperCase()}</div>
-                    <p className="font-bold text-lg">{user?.username}</p>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-lg font-bold text-white">
+                        {user?.username.charAt(0).toUpperCase()}
+                    </div>
+                    <p className="text-lg font-bold">{user?.username}</p>
                 </div>
 
-                <div className="flex items-center gap-4 text-gray-600 text-xl">
+                <div className="flex items-center gap-4 text-xl text-gray-600">
                     <IoChatbubbleEllipsesOutline className="cursor-pointer hover:text-black" />
                     <FiMoreVertical className="cursor-pointer hover:text-black" />
                 </div>
             </div>
 
             {/* TITLE */}
-            <div className="px-4 py-2 text-sm uppercase font-semibold text-gray-500 border-b bg-gray-50">Chats</div>
+            <div className="border-b bg-gray-50 px-4 py-2 text-sm font-semibold text-gray-500 uppercase">Chats</div>
 
             {/* ROOM LIST */}
             <div className="flex-1">
@@ -62,10 +64,12 @@ const RoomList = ({ rooms, activeRoom, setActiveRoom, user }: RoomListProps) => 
                         <div
                             key={room._id}
                             onClick={() => setActiveRoom(room)}
-                            className={`p-4 cursor-pointer border-b hover:bg-gray-100 transition
-                                ${activeRoom?._id === room._id ? "bg-gray-200" : ""}`}>
+                            className={`cursor-pointer border-b p-4 transition hover:bg-gray-100 ${activeRoom?._id === room._id ? "bg-gray-200" : ""}`}
+                        >
                             <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xl">{roomName?.charAt(0).toUpperCase()}</div>
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500 text-xl font-bold text-white">
+                                    {roomName?.charAt(0).toUpperCase()}
+                                </div>
 
                                 <div>
                                     <p className="font-semibold">{roomName}</p>

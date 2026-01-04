@@ -8,19 +8,21 @@ interface MessageListProps {
 
 const MessageList = ({ messages, user }: MessageListProps) => {
     return (
-        <div className="flex-1 p-4 overflow-y-auto space-y-3">
+        <div className="flex-1 space-y-3 overflow-y-auto p-4">
             {messages.map((m) => {
                 const isMe = m.sender._id === user?._id;
 
                 return (
                     <div key={m._id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
                         <div
-                            className={`p-3 rounded-lg max-w-xs shadow
-                ${isMe ? "bg-blue-500 text-white" : "bg-gray-200"}`}>
+                            className={`max-w-xs rounded-lg p-3 shadow ${isMe ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+                        >
                             <p className="text-sm whitespace-pre-wrap">{m.text}</p>
 
                             {/* Username */}
-                            <p className={`text-[10px] mt-1 ${isMe ? "text-gray-200" : "text-gray-600"}`}>{m.sender.username}</p>
+                            <p className={`mt-1 text-[10px] ${isMe ? "text-gray-200" : "text-gray-600"}`}>
+                                {m.sender.username}
+                            </p>
                         </div>
                     </div>
                 );
